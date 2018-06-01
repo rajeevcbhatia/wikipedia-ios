@@ -986,7 +986,6 @@ static NSString *const WMFLastRemoteAppConfigCheckAbsoluteTimeKey = @"WMFLastRem
             else if(activity.userInfo[@"deepLinkedURL"]) { //if article URL is not present and deep linked url is present, show that location on the map
                 NSURL *deepLinkedURL = activity.userInfo[@"deepLinkedURL"];
                 if(deepLinkedURL) {
-//                    [[self placesViewController] showNearbyArticles]
                     [[self placesViewController] showPlaceWithDeepLinkURL:deepLinkedURL];
                 }
             }

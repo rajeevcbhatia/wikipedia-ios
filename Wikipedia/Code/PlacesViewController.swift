@@ -1259,15 +1259,11 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         guard let urlComponents = URLComponents(url: deepLinkURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {
             return
         }
-        var name: String? = nil
         var latitude: Double? = nil
         var longitude: Double? = nil
         
         for item in queryItems {
-            if item.name == "name" {
-                name = item.value
-            }
-            else if item.name == "latitude", let value = item.value {
+            if item.name == "latitude", let value = item.value {
                 latitude = Double(value)
                 
             }
@@ -1275,9 +1271,10 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
                 longitude = Double(value)
             }
         }
-        if let name = name, let latitude = latitude, let longitude = longitude {
+        if let latitude = latitude, let longitude = longitude {
             DispatchQueue.main.async { [weak self] in
                 self?.updateViewModeToMap()
+                self?.panMapToNextLocationUpdate = false
                 self?.zoomAndPanMapView(toLocation: CLLocation(latitude: latitude, longitude: longitude))
             }
         }
