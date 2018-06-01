@@ -983,6 +983,13 @@ static NSString *const WMFLastRemoteAppConfigCheckAbsoluteTimeKey = @"WMFLastRem
                 [[self placesViewController] updateViewModeToMap];
                 [[self placesViewController] showArticleURL:articleURL];
             }
+            else if(activity.userInfo[@"deepLinkedURL"]) { //if article URL is not present and deep linked url is present, show that location on the map
+                NSURL *deepLinkedURL = activity.userInfo[@"deepLinkedURL"];
+                if(deepLinkedURL) {
+//                    [[self placesViewController] showNearbyArticles]
+                    [[self placesViewController] showPlaceWithDeepLinkURL:deepLinkedURL];
+                }
+            }
         } break;
         case WMFUserActivityTypeContent: {
             [self.rootTabBarController setSelectedIndex:WMFAppTabTypeExplore];

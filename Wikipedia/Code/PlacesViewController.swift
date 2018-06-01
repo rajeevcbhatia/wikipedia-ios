@@ -1252,6 +1252,36 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         mapView.selectAnnotation(articlePlace, animated: articlePlace.identifier != previouslySelectedArticlePlaceIdentifier)
         previouslySelectedArticlePlaceIdentifier = articlePlace.identifier
     }
+    
+    // MARK:- place from deep link url
+    @objc func showPlace(deepLinkURL: URL) {
+        
+        guard let urlComponents = URLComponents(url: deepLinkURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {
+            return
+        }
+        var name: String? = nil
+        var latitude: Double? = nil
+        var longitude: Double? = nil
+        
+        for item in queryItems {
+            if item.name == "name" {
+                name = item.value
+            }
+            else if item.name == "latitude", let value = item.value {
+                latitude = Double(value)
+                
+            }
+            else if item.name == "longitude", let value = item.value {
+                longitude = Double(value)
+            }
+        }
+        if let name = name, let latitude = latitude, let longitude = longitude {
+            DispatchQueue.main.async { [weak self] in
+                self?.updateViewModeToMap()
+                self?.zoomAndPanMapView(toLocation: CLLocation(latitude: latitude, longitude: longitude))
+            }
+        }
+    }
 
     // MARK: - Search History
     

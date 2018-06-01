@@ -72,6 +72,10 @@ NSString *const WMFNavigateToActivityNotification = @"WMFNavigateToActivityNotif
     }
     NSUserActivity *activity = [self wmf_pageActivityWithName:@"Places"];
     activity.webpageURL = articleURL;
+    //adding the deepLinkedURL to the places dict to get place details
+    NSMutableDictionary *tempDict = [activity.userInfo mutableCopy];
+    tempDict[@"deepLinkedURL"] = activityURL;
+    activity.userInfo = tempDict;
     return activity;
 }
 
